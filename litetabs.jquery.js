@@ -24,7 +24,8 @@
     			hideHash : true,
     			rounded : false,
     			selectedTab : 1,
-    			width : 500			
+    			width : 500,
+				action : 'click'
     		},
 		
     		// merge defaults with options in new settings object
@@ -47,8 +48,8 @@
     			left : -9999
     		});
 
-    		// on tab click...
-    		$tab.click(function(e) {
+			tabSelectedFn = function(e) {
+
     			var filterHash = $div.removeClass('selected').filter('[name=' + this.hash + ']');
 			
     			// defaults: add selected class to tab
@@ -59,11 +60,16 @@
 
     			// option: hide hash change
     			settings.hideHash && e.preventDefault();
+    		}
 
-    		});	
+    		// on tab action...
+			if (settings.action === 'click')
+    			$tab.click(tabSelectedFn);	
+			else if (settings.action === 'mouseover')
+				$tab.mouseover(tabSelectedFn);	
 
     		// option: set selected tab
-    		settings.selectedTab && $tab.eq(settings.selectedTab - 1).click();
+    		settings.selectedTab && $tab.eq(settings.selectedTab - 1).trigger(settings.action);
 
     		// option: set rounded corners
     		settings.rounded && $this.addClass('rounded');
